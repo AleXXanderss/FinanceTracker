@@ -7,6 +7,7 @@ from app.models.category import Category
 from app.models.transaction import Transaction
 from app.api.category import router as category_router
 from app.api.transaction import router as transaction_router
+from app.api.auth import router as auth_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -17,6 +18,9 @@ app.include_router(user_router)
 app.include_router(category_router)
 
 app.include_router(transaction_router)
+
+app.include_router(auth_router)
+
 @app.get("/")
 def root():
     return {"message": "Finance Tracker API is running"}
