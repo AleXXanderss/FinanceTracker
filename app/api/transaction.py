@@ -26,10 +26,6 @@ def create_transaction(
     if not category:
         raise HTTPException(status_code=404, detail="Category not found")
 
-    # проверка типа
-    if transaction.type not in ["income", "expense"]:
-        raise HTTPException(status_code=400, detail="Invalid type")
-
     new_transaction = Transaction(
         amount=transaction.amount,
         description=transaction.description,

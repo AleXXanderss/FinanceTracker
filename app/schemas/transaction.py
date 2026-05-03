@@ -1,11 +1,12 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from datetime import datetime
+from app.models.enums import TransactionType
 
 
 class TransactionCreate(BaseModel):
-    amount: float
+    amount: float = Field(gt=0)
     description: str | None = None
-    type: str  # income / expense
+    type: TransactionType
     category_id: int
 
 
@@ -13,7 +14,7 @@ class TransactionResponse(BaseModel):
     id: int
     amount: float
     description: str | None
-    type: str
+    type: TransactionType
     date: datetime
     category_id: int
 

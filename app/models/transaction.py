@@ -1,8 +1,9 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime, Enum
 from sqlalchemy.orm import relationship
 from datetime import datetime
 
 from app.db.database import Base
+from app.models.enums import TransactionType
 
 
 class Transaction(Base):
@@ -13,7 +14,7 @@ class Transaction(Base):
     description = Column(String)
     date = Column(DateTime, default=datetime.utcnow)
 
-    type = Column(String, nullable=False)  # income / expense
+    type = Column(Enum(TransactionType), nullable=False)  # income / expense
 
     user_id = Column(Integer, ForeignKey("users.id"))
     category_id = Column(Integer, ForeignKey("categories.id"))

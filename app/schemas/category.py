@@ -1,9 +1,10 @@
 from pydantic import BaseModel
+from app.models.enums import TransactionType
 
 
 class CategoryCreate(BaseModel):
     name: str
-    type: str  # income / expense
+    type: TransactionType
 
 
 class CategoryResponse(BaseModel):
