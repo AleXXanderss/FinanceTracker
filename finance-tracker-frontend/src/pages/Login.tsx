@@ -11,6 +11,7 @@ export default function Login() {
   const handleLogin = async () => {
     try {
       const form = new URLSearchParams();
+
       form.append("username", username);
       form.append("password", password);
 
@@ -23,7 +24,8 @@ export default function Login() {
       localStorage.setItem("token", res.data.access_token);
 
       navigate("/");
-    } catch {
+    } catch (err: any) {
+      console.log(err?.response?.data);
       alert("Login failed");
     }
   };

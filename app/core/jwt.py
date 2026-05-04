@@ -1,7 +1,10 @@
 from datetime import datetime, timedelta
 from jose import jwt
+import os
 
-from app.core.config import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = os.getenv("ALGORITHM")
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 
 
 def create_access_token(data: dict):
@@ -9,5 +12,8 @@ def create_access_token(data: dict):
 
     expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
+
+    # 🔥 ВАЖНО: sub = строка
+    to_encode["sub"] = str(to_encode["sub"])
 
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)

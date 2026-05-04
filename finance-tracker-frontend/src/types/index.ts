@@ -11,3 +11,10 @@ export interface Category {
   name: string;
   type: "income" | "expense";
 }
+
+export interface TransactionCreate {
+  amount: number;
+  description: string;
+  type: "income" | "expense";
+  category_id: number;
+}

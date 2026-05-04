@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, Typography, Button } from "@mui/material";
+import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
@@ -10,23 +10,25 @@ export default function Navbar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" elevation={0}>
       <Toolbar>
-        <Typography sx={{ flexGrow: 1 }}>
+        <Typography variant="h6" sx={{ flexGrow: 1 }}>
           Finance Tracker
         </Typography>
 
-        <Button color="inherit" onClick={() => navigate("/")}>
-          Dashboard
-        </Button>
+        <Box sx={{ display: "flex", gap: 2 }}>
+          <Button color="inherit" onClick={() => navigate("/")}>
+            Dashboard
+          </Button>
 
-        <Button color="inherit" onClick={() => navigate("/transactions")}>
-          Transactions
-        </Button>
+          <Button color="inherit" onClick={() => navigate("/transactions")}>
+            Transactions
+          </Button>
 
-        <Button color="inherit" onClick={logout}>
-          Logout
-        </Button>
+          <Button color="inherit" onClick={logout}>
+            Logout
+          </Button>
+        </Box>
       </Toolbar>
     </AppBar>
   );

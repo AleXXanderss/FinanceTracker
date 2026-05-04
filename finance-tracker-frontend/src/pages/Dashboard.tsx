@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Container, Card, CardContent, Typography } from "@mui/material";
+
 import api from "../api/client";
 import Navbar from "../components/layout/Navbar";
 
@@ -14,9 +15,7 @@ export default function Dashboard() {
 
     api.get("/analytics/summary")
       .then(res => setData(res.data))
-      .catch(() => {
-        window.location.href = "/login";
-      });
+      .catch(() => window.location.href = "/login");
   }, []);
 
   if (!data) return <div>Loading...</div>;
@@ -25,26 +24,35 @@ export default function Dashboard() {
     <>
       <Navbar />
 
-      <Container sx={{ mt: 4 }}>
-        <Typography variant="h4">Dashboard</Typography>
+      <Container style={{ marginTop: 20 }}>
+        <div style={{ display: "flex", gap: 16 }}>
+          <Card style={{ flex: 1 }}>
+            <CardContent>
+              <Typography color="text.secondary">Income</Typography>
+              <Typography variant="h5">
+                {data.total_income}
+              </Typography>
+            </CardContent>
+          </Card>
 
-        <Card sx={{ mt: 2 }}>
-          <CardContent>
-            <Typography>Income: {data.total_income}</Typography>
-          </CardContent>
-        </Card>
+          <Card style={{ flex: 1 }}>
+            <CardContent>
+              <Typography color="text.secondary">Expense</Typography>
+              <Typography variant="h5">
+                {data.total_expense}
+              </Typography>
+            </CardContent>
+          </Card>
 
-        <Card sx={{ mt: 2 }}>
-          <CardContent>
-            <Typography>Expense: {data.total_expense}</Typography>
-          </CardContent>
-        </Card>
-
-        <Card sx={{ mt: 2 }}>
-          <CardContent>
-            <Typography>Balance: {data.balance}</Typography>
-          </CardContent>
-        </Card>
+          <Card style={{ flex: 1 }}>
+            <CardContent>
+              <Typography color="text.secondary">Balance</Typography>
+              <Typography variant="h5">
+                {data.balance}
+              </Typography>
+            </CardContent>
+          </Card>
+        </div>
       </Container>
     </>
   );
