@@ -2,42 +2,45 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/client";
 
-export default function Login() {
+export default function Register() {
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const handleRegister = async () => {
     try {
-      const form = new URLSearchParams();
-
-      form.append("username", username);
-      form.append("password", password);
-
-      const res = await api.post("/auth/login", form, {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
+      await api.post("/users/", {
+        username,
+        email,
+        password,
       });
 
-      localStorage.setItem("token", res.data.access_token);
+      alert("Registration successful");
 
-      navigate("/");
+      // сразу отправляем на логин
+      navigate("/login");
     } catch (err: any) {
       console.log(err?.response?.data);
-      alert("Login failed");
+      alert("Registration failed");
     }
   };
 
   return (
     <div>
-      <h2>Login</h2>
+      <h2>Register</h2>
 
       <input
         placeholder="username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
+      />
+
+      <input
+        placeholder="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
       />
 
       <input
@@ -47,11 +50,11 @@ export default function Login() {
         onChange={(e) => setPassword(e.target.value)}
       />
 
-      <button onClick={handleLogin}>Login</button>
+      <button onClick={handleRegister}>Register</button>
 
       <p>
-        No account?{" "}
-        <a href="/register">Register</a>
+        Already have an account?{" "}
+        <a href="/login">Login</a>
       </p>
     </div>
   );
