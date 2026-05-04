@@ -20,14 +20,10 @@ export default function Login() {
         },
       });
 
-      if (!res.data.access_token) {
-        throw new Error("No token");
-      }
-
       localStorage.setItem("token", res.data.access_token);
 
       navigate("/");
-    } catch (err) {
+    } catch {
       alert("Login failed");
     }
   };
