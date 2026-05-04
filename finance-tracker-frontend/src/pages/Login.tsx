@@ -1,5 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  Container,
+  Card,
+  CardContent,
+  Typography,
+  TextField,
+  Button
+} from "@mui/material";
+
 import api from "../api/client";
 
 export default function Login() {
@@ -31,28 +40,44 @@ export default function Login() {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
+    <Container
+      style={{
+        height: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
+      }}
+    >
+      <Card style={{ width: 400 }}>
+        <CardContent>
+          <Typography variant="h5" align="center">
+            Login
+          </Typography>
 
-      <input
-        placeholder="username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
+          <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 20 }}>
+            <TextField
+              label="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
 
-      <input
-        type="password"
-        placeholder="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+            <TextField
+              type="password"
+              label="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
 
-      <button onClick={handleLogin}>Login</button>
+            <Button variant="contained" onClick={handleLogin}>
+              Login
+            </Button>
 
-      <p>
-        No account?{" "}
-        <a href="/register">Register</a>
-      </p>
-    </div>
+            <Button onClick={() => navigate("/register")}>
+              Go to Register
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </Container>
   );
 }

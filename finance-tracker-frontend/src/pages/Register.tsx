@@ -1,5 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  Container,
+  Card,
+  CardContent,
+  Typography,
+  TextField,
+  Button
+} from "@mui/material";
+
 import api from "../api/client";
 
 export default function Register() {
@@ -18,8 +27,6 @@ export default function Register() {
       });
 
       alert("Registration successful");
-
-      // сразу отправляем на логин
       navigate("/login");
     } catch (err: any) {
       console.log(err?.response?.data);
@@ -28,34 +35,50 @@ export default function Register() {
   };
 
   return (
-    <div>
-      <h2>Register</h2>
+    <Container
+      style={{
+        height: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
+      }}
+    >
+      <Card style={{ width: 400 }}>
+        <CardContent>
+          <Typography variant="h5" align="center">
+            Register
+          </Typography>
 
-      <input
-        placeholder="username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
+          <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 20 }}>
+            <TextField
+              label="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
 
-      <input
-        placeholder="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
+            <TextField
+              label="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
 
-      <input
-        type="password"
-        placeholder="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+            <TextField
+              type="password"
+              label="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
 
-      <button onClick={handleRegister}>Register</button>
+            <Button variant="contained" onClick={handleRegister}>
+              Register
+            </Button>
 
-      <p>
-        Already have an account?{" "}
-        <a href="/login">Login</a>
-      </p>
-    </div>
+            <Button onClick={() => navigate("/login")}>
+              Go to Login
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </Container>
   );
 }
