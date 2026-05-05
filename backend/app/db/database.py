@@ -1,20 +1,23 @@
-# app/db/database.py
-
+import os
+import time
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-engine = create_engine(DATABASE_URL)
 
-SessionLocal = sessionmaker(
-    autocommit=False,
-    autoflush=False,
-    bind=engine
-)
+for i in range(10):
+    try:
+        engine = create_engine(DATABASE_URL)
+        conn = engine.connect()
+        conn.close()
+        print("Database connected")
+        break
+    except Exception as e:
+        print("Waiting for database...")
+        time.sleep(2)
+else:
+    raise Exception("Database not available")
 
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()

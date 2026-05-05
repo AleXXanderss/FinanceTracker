@@ -1,10 +1,14 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
+from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
 
 from app.db.database import engine, Base
+
+from app.models.user import User
+from app.models.category import Category
+from app.models.transaction import Transaction
 
 from app.api.user import router as user_router
 from app.api.category import router as category_router
@@ -15,7 +19,6 @@ from app.api.analytics import router as analytics_router
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
-
 
 app.add_middleware(
     CORSMiddleware,

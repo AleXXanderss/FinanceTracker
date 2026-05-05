@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:15
+    container_name: finance_db
+    environment:
+      POSTGRES_USER: finance_user
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: finance_tracker_db
+    ports:
+      - "5433:5432"
+
+  backend:
+    build: ./backend
+    container_name: finance_backend
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://finance_user:123456@db/finance_tracker_db
+      SECRET_KEY: supersecretkey
+      ALGORITHM: HS256
+      ACCESS_TOKEN_EXPIRE_MINUTES: 30
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build: ./frontend
+    container_name: finance_frontend
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
