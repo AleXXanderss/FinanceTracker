@@ -32,17 +32,17 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
     db.refresh(new_user)
 
     default_categories = [
-        Category(name="Food", type=TransactionType.expense, user_id=new_user.id),
-        Category(name="Transport", type=TransactionType.expense, user_id=new_user.id),
-        Category(name="Entertainment", type=TransactionType.expense, user_id=new_user.id),
-        Category(name="Health", type=TransactionType.expense, user_id=new_user.id),
-        Category(name="Shopping", type=TransactionType.expense, user_id=new_user.id),
-        Category(name="Other Expense", type=TransactionType.expense, user_id=new_user.id),
+        Category(name="Еда", type=TransactionType.expense, user_id=new_user.id),
+        Category(name="Транспорт", type=TransactionType.expense, user_id=new_user.id),
+        Category(name="Развлечения", type=TransactionType.expense, user_id=new_user.id),
+        Category(name="Здоровье", type=TransactionType.expense, user_id=new_user.id),
+        Category(name="Покупки", type=TransactionType.expense, user_id=new_user.id),
+        Category(name="Прочие расходы", type=TransactionType.expense, user_id=new_user.id),
 
-        Category(name="Salary", type=TransactionType.income, user_id=new_user.id),
-        Category(name="Freelance", type=TransactionType.income, user_id=new_user.id),
-        Category(name="Business", type=TransactionType.income, user_id=new_user.id),
-        Category(name="Other Income", type=TransactionType.income, user_id=new_user.id),
+        Category(name="Зарплата", type=TransactionType.income, user_id=new_user.id),
+        Category(name="Фриланс", type=TransactionType.income, user_id=new_user.id),
+        Category(name="Бизнес", type=TransactionType.income, user_id=new_user.id),
+        Category(name="Прочие доходы", type=TransactionType.income, user_id=new_user.id),
     ]
 
     db.add_all(default_categories)

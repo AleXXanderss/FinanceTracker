@@ -1,3 +1,3 @@
 export default function Categories() {
-  return <div>Categories page (in progress)</div>;
+  return <div>Страница категорий в разработке</div>;
 }

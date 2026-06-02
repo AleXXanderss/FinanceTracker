@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
 from app.db.session import get_db
@@ -18,7 +19,11 @@ def create_transaction(
     current_user: User = Depends(get_current_user)
 ):
     category = db.query(Category).filter(
-        Category.id == transaction.category_id
+        Category.id == transaction.category_id,
+        or_(
+            Category.user_id == current_user.id,
+            Category.user_id == None
+        )
     ).first()
 
     if not category:
@@ -27,12 +32,19 @@ def create_transaction(
     if category.type != transaction.type:
         raise HTTPException(status_code=400, detail="Category type mismatch")
 
+    transaction_payload = {
+        "amount": transaction.amount,
+        "description": transaction.description,
+        "type": transaction.type,
+        "user_id": current_user.id,
+        "category_id": transaction.category_id,
+    }
+
+    if transaction.date is not None:
+        transaction_payload["date"] = transaction.date
+
     new_transaction = Transaction(
-        amount=transaction.amount,
-        description=transaction.description,
-        type=transaction.type,
-        user_id=current_user.id,
-        category_id=transaction.category_id
+        **transaction_payload
     )
 
     db.add(new_transaction)
@@ -49,6 +61,9 @@ def get_transactions(
 ):
     return db.query(Transaction).filter(
         Transaction.user_id == current_user.id
+    ).order_by(
+        Transaction.date.desc(),
+        Transaction.id.desc()
     ).all()
 
 

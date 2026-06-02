@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
+  Box,
+  Chip,
   Container,
-  Card,
-  CardContent,
+  Paper,
   Typography,
   TextField,
-  Button
+  Button,
+  Stack,
 } from "@mui/material";
 
 import api from "../api/client";
@@ -25,60 +27,108 @@ export default function Register() {
         email,
         password,
       });
-
-      alert("Registration successful");
-      navigate("/login");
     } catch (err: any) {
       console.log(err?.response?.data);
-      alert("Registration failed");
+      alert("Не удалось зарегистрироваться");
+      return;
+    }
+
+    try {
+      const form = new URLSearchParams();
+      form.append("username", username);
+      form.append("password", password);
+
+      const loginRes = await api.post("/auth/login", form, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      });
+
+      localStorage.setItem("token", loginRes.data.access_token);
+      navigate("/");
+    } catch (err: any) {
+      console.log(err?.response?.data);
+      alert("Аккаунт создан, но войти автоматически не удалось. Войдите вручную.");
+      navigate("/login");
     }
   };
 
   return (
     <Container
-      style={{
-        height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center"
+      sx={{
+        minHeight: "100vh",
+        display: "grid",
+        placeItems: "center",
+        py: 4,
       }}
     >
-      <Card style={{ width: 400 }}>
-        <CardContent>
-          <Typography variant="h5" align="center">
-            Register
+      <Paper
+        sx={{
+          width: "100%",
+          maxWidth: 980,
+          overflow: "hidden",
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", md: "1.05fr 0.95fr" },
+        }}
+      >
+        <Box
+          sx={{
+            p: { xs: 3.5, md: 5 },
+            background:
+              "linear-gradient(145deg, rgba(255, 250, 242, 0.94) 0%, rgba(251, 191, 36, 0.16) 100%)",
+          }}
+        >
+          <Chip
+            label="Новый кабинет"
+            color="secondary"
+            variant="outlined"
+            sx={{ mb: 2 }}
+          />
+          <Typography variant="h3" sx={{ maxWidth: 440 }}>
+            Соберите понятную картину по финансам с первого дня.
+          </Typography>
+          <Typography color="text.secondary" sx={{ mt: 2, maxWidth: 460 }}>
+            Создайте аккаунт, чтобы сразу фиксировать операции, отслеживать
+            доходы и расходы по месяцам и видеть изменение баланса в одном месте.
+          </Typography>
+        </Box>
+
+        <Box sx={{ p: { xs: 3, md: 5 } }}>
+          <Typography variant="h4">Регистрация</Typography>
+          <Typography color="text.secondary" sx={{ mt: 1 }}>
+            Заполните поля ниже, и после регистрации вы сразу попадёте в аккаунт.
           </Typography>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 20 }}>
+          <Stack spacing={2} sx={{ mt: 4 }}>
             <TextField
-              label="Username"
+              label="Имя пользователя"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
 
             <TextField
-              label="Email"
+              label="Электронная почта"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
 
             <TextField
               type="password"
-              label="Password"
+              label="Пароль"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
 
-            <Button variant="contained" onClick={handleRegister}>
-              Register
+            <Button variant="contained" size="large" onClick={handleRegister}>
+              Зарегистрироваться
             </Button>
 
-            <Button onClick={() => navigate("/login")}>
-              Go to Login
+            <Button variant="text" onClick={() => navigate("/login")}>
+              Назад ко входу
             </Button>
-          </div>
-        </CardContent>
-      </Card>
+          </Stack>
+        </Box>
+      </Paper>
     </Container>
   );
 }

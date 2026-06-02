@@ -8,6 +8,7 @@ class TransactionCreate(BaseModel):
     description: str | None = None
     type: TransactionType
     category_id: int
+    date: datetime | None = None
 
 
 class TransactionResponse(BaseModel):

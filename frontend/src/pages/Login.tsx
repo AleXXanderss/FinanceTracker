@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
+  Box,
+  Chip,
   Container,
-  Card,
-  CardContent,
+  Paper,
   Typography,
   TextField,
-  Button
+  Button,
+  Stack,
 } from "@mui/material";
 
 import api from "../api/client";
@@ -35,49 +37,79 @@ export default function Login() {
       navigate("/");
     } catch (err: any) {
       console.log(err?.response?.data);
-      alert("Login failed");
+      alert("Не удалось войти");
     }
   };
 
   return (
     <Container
-      style={{
-        height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center"
+      sx={{
+        minHeight: "100vh",
+        display: "grid",
+        placeItems: "center",
+        py: 4,
       }}
     >
-      <Card style={{ width: 400 }}>
-        <CardContent>
-          <Typography variant="h5" align="center">
-            Login
+      <Paper
+        sx={{
+          width: "100%",
+          maxWidth: 980,
+          overflow: "hidden",
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", md: "1.05fr 0.95fr" },
+        }}
+      >
+        <Box
+          sx={{
+            p: { xs: 3.5, md: 5 },
+            background:
+              "linear-gradient(145deg, rgba(15, 118, 110, 0.98) 0%, rgba(17, 94, 89, 0.94) 58%, rgba(217, 119, 6, 0.9) 100%)",
+            color: "common.white",
+          }}
+        >
+          <Chip
+            label="Безопасный вход"
+            sx={{ bgcolor: "rgba(255, 255, 255, 0.14)", color: "common.white", mb: 2 }}
+          />
+          <Typography variant="h3" sx={{ maxWidth: 440 }}>
+            Контролируйте деньги в спокойном и понятном интерфейсе.
+          </Typography>
+          <Typography sx={{ mt: 2, maxWidth: 460, opacity: 0.92 }}>
+            Войдите, чтобы смотреть доходы и расходы по месяцам, ключевые
+            показатели и последние операции без лишней рутины.
+          </Typography>
+        </Box>
+
+        <Box sx={{ p: { xs: 3, md: 5 } }}>
+          <Typography variant="h4">Вход</Typography>
+          <Typography color="text.secondary" sx={{ mt: 1 }}>
+            Укажите данные аккаунта, чтобы открыть главную страницу.
           </Typography>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 20 }}>
+          <Stack spacing={2} sx={{ mt: 4 }}>
             <TextField
-              label="Username"
+              label="Имя пользователя"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
 
             <TextField
               type="password"
-              label="Password"
+              label="Пароль"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
 
-            <Button variant="contained" onClick={handleLogin}>
-              Login
+            <Button variant="contained" size="large" onClick={handleLogin}>
+              Войти
             </Button>
 
-            <Button onClick={() => navigate("/register")}>
-              Go to Register
+            <Button variant="text" onClick={() => navigate("/register")}>
+              Создать аккаунт
             </Button>
-          </div>
-        </CardContent>
-      </Card>
+          </Stack>
+        </Box>
+      </Paper>
     </Container>
   );
 }
