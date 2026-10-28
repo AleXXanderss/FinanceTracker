@@ -1,5 +1,7 @@
-from pydantic import BaseModel, Field
 from datetime import datetime
+
+from pydantic import BaseModel, Field
+
 from app.models.enums import TransactionType
 
 
@@ -9,6 +11,7 @@ class TransactionCreate(BaseModel):
     type: TransactionType
     category_id: int
     date: datetime | None = None
+    tag_ids: list[int] | None = None
 
 
 class TransactionResponse(BaseModel):
@@ -18,6 +21,7 @@ class TransactionResponse(BaseModel):
     type: TransactionType
     date: datetime
     category_id: int
+    tag_ids: list[int] = []
 
     class Config:
         from_attributes = True

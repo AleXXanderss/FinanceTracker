@@ -1,6 +1,7 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime, Enum
-from sqlalchemy.orm import relationship
 from datetime import datetime
+
+from sqlalchemy import Column, DateTime, Enum, Float, ForeignKey, Integer, String
+from sqlalchemy.orm import relationship
 
 from app.db.database import Base
 from app.models.enums import TransactionType
@@ -13,11 +14,12 @@ class Transaction(Base):
     amount = Column(Float, nullable=False)
     description = Column(String)
     date = Column(DateTime, default=datetime.utcnow)
+    type = Column(Enum(TransactionType), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
 
-    type = Column(Enum(TransactionType), nullable=False)  # income / expense
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    category_id = Column(Integer, ForeignKey("categories.id"), nullable=False)
 
-    user_id = Column(Integer, ForeignKey("users.id"))
-    category_id = Column(Integer, ForeignKey("categories.id"))
-
-    user = relationship("User")
+    user = relationship("User", back_populates="transactions")
     category = relationship("Category", back_populates="transactions")
+    transaction_tags = relationship("TransactionTag", back_populates="transaction")

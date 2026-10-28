@@ -68,6 +68,10 @@ export default function Navbar() {
             Транзакции
           </Button>
 
+          <Button color="inherit" onClick={() => navigate("/categories")}>
+            Категории
+          </Button>
+
           <Button
             color="inherit"
             variant="outlined"
